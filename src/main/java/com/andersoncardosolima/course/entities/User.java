@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity // informa o jpa que isto é uma entidade
 @Table(name = "tb_user") // renomeia a tabela no banco de dados
 public class User implements Serializable {
@@ -24,6 +26,7 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 
+	@JsonIgnore // cria trava para impedir loop na dependencia de mão dupla
 	@OneToMany(mappedBy = "client") // informa para o JPA relação um para muitos
 	private List<Order> orders = new ArrayList<>();
 
