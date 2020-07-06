@@ -8,12 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity // informa o jpa que isto é uma entidade
 @Table(name = "tb_category") // renomeia a tabela no banco de dados
-public class Category implements Serializable{
+public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -21,7 +23,9 @@ public class Category implements Serializable{
 	private Long id;
 	private String Name;
 	
-	@Transient
+	@JsonIgnore // evitar loop de realcionamento no json
+	// relação muitos pra muitos, refereciando a outra entidade associada a está.
+	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 
 	public Category() {
@@ -48,7 +52,7 @@ public class Category implements Serializable{
 	public void setName(String name) {
 		Name = name;
 	}
-	
+
 	public Set<Product> getProducts() {
 		return products;
 	}
