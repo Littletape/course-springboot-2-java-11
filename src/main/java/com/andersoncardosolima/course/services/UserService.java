@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.andersoncardosolima.course.entities.User;
 import com.andersoncardosolima.course.repositories.UserRepository;
+import com.andersoncardosolima.course.services.exceptions.ResourceNotFoundException;
 
 @Service // registra serviço como componente do Spring facilitando injeção de dependencia
 public class UserService {
@@ -23,7 +24,7 @@ public class UserService {
 	// busca usuarios pelo id
 	public User findbyId(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); // caso retorne erro lança excessão personalizada.
 	}
 
 	public User insert(User obj) {
